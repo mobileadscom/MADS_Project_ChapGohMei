@@ -1,0 +1,17 @@
+/* --- Scene Transition */
+.scene-translate-enter-active, .scene-translate-leave-active {
+  transition: all 1s;
+}
+
+.scene-translate-enter, .scene-translate-leave-active {
+  opacity: 0;
+}
+
+.scene-translate-enter {
+  transform: translateY(31px);
+}
+
+.scene-translate-leave-active {
+  transform: translateY(-31px);
+}
+/* /-- Scene Transition */

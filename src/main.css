@@ -1,0 +1,54 @@
+html, body {
+  min-height: 100%;
+  height: 100%;
+  background: purple;
+}
+
+body {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+#rma-widget, #ad-container {
+  height: 100%;
+  width: 100%;
+}
+
+.block {
+  position: relative;
+  width: 50%;
+}
+
+.scenes {
+  position: absolute;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Scene 1 */
+.scene1 {
+
+}
+/* /-- Scene 1 */
+
+/* --- Scene Transition */
+.scene-translate-enter-active, .scene-translate-leave-active {
+  transition: all 1s;
+}
+
+.scene-translate-enter, .scene-translate-leave-active {
+  opacity: 0;
+}
+
+.scene-translate-enter {
+  transform: translateX(10%) translateY(-50%);
+}
+
+.scene-translate-leave-active {
+  transform: translateX(-100%) translateY(-50%);
+}
+/* /-- Scene Transition */
