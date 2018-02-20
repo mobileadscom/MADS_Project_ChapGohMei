@@ -45,20 +45,37 @@ class AdUnit extends Mads {
 
     // Scene 4
     scenes.push(`
-      <div class="img-lanterns"><img class="img-fluid" src="${this.resolve('img/scene4/img-lanterns.png')}" /></div>
       <div class="cta-lantern"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
-      <div class="img-selected"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
+      <div class="img-selected" @click="next()"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
       `);
 
     // Scene 5
     scenes.push(`
       <div class="img-selected"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
-      <div class="cta-share-on"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
+      <div class="cta-share-on" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
       `);
+
+    // Scene 6
+    scenes.push(`
+      <div class="cta-wish"><img class="img-fluid" src="${this.resolve('img/scene6/cta-catch.png')}" /></div>
+      <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
+      <div class="actions">
+        <img class="img-fluid" src="${this.resolve('img/scene6/btn-wish.png')}" />
+        <img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" />
+      </div>
+      `);
+
+    // Scene 7
+    scenes.push(`
+        <div class="actions">
+          <img class="img-fluid" src="${this.resolve('img/scene6/btn-wish.png')}" />
+          <img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" />
+        </div>
+        `);
 
     return `
       <div id="ad-container" class="block">
-        <transition name="scene-translate">
+        <transition :name="sceneTransition">
           ${scenes.map((s, i) => `<div id="scene${i + 1}" ref="scene${i + 1}" class="scenes" key="${i}" v-if="scene === ${i + 1}">
               <div class="content">${s}</div>
             </div>`).join('')}
@@ -72,13 +89,15 @@ class AdUnit extends Mads {
     this.vue = new Vue({
       el: '#ad-container',
       data: {
-        scene: 1,
-        selectedImg: root.resolve('img/lantern-eng-1.png'),
+        scene: 4,
+        selectedImg: root.resolve('img/scene2/lantern-eng-1.png'),
+        sceneTransition: 'scene-default',
       },
       watch: {
         scene: {
           immediate: true,
           handler: (val) => {
+            // If Scene 2 Load slider
             if (val === 2) {
               root.loadURLCSS(root.resolve('css/vendors/slick.css'));
               root.loadURLCSS(root.resolve('css/vendors/slick-theme.css'));
@@ -103,6 +122,7 @@ class AdUnit extends Mads {
               });
             }
 
+            // If Scene 3 Load Orientation/HammerJS for panup/phoneup
             if (val === 3) {
               console.log('load orientation changes');
               window.addEventListener('deviceorientation', (e) => {
@@ -118,6 +138,21 @@ class AdUnit extends Mads {
                   }
                 });
               });
+            }
+
+            // If Scene 6 Load HammerJS for panleft or panright
+            if (val === 6) {
+              root.loadJS(root.resolve('js/hammer.min.js'))
+                .then(root.loadJS(root.resolve('js/TweenLite.min.js')))
+                .then(() => {
+                  const hammertime = new window.Hammer(root.vue.$refs.scene6);
+                  hammertime.on('pan', (ev) => {
+                    if (ev.additionalEvent === 'panleft' || ev.additionalEvent === 'panright') {
+                      root.vue.$data.sceneTransition = 'scene-side-translate';
+                      root.vue.next(7);
+                    }
+                  });
+                });
             }
           },
         },

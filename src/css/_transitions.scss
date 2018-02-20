@@ -1,17 +1,32 @@
-/* --- Scene Transition */
-.scene-translate-enter-active, .scene-translate-leave-active {
+.scene-default-enter-active, .scene-default-leave-active {
   transition: all 1s;
 }
 
-.scene-translate-enter, .scene-translate-leave-active {
+.scene-default-enter, .scene-default-leave-active {
   opacity: 0;
 }
 
-.scene-translate-enter {
-  transform: translateY(31px);
+.scene-default-enter {
+  transform: defaultY(31px);
 }
 
-.scene-translate-leave-active {
-  transform: translateY(-31px);
+.scene-default-leave-active {
+  transform: defaultY(-31px);
 }
-/* /-- Scene Transition */
+
+
+.scene-side-translate-enter-active, .scene-side-translate-leave-active {
+  transition: all 1s;
+}
+
+.scene-side-translate-enter, .scene-side-translate-leave-active {
+  opacity: 0;
+}
+
+.scene-side-translate-enter {
+  transform: translateX(31px);
+}
+
+.scene-side-translate-leave-active {
+  transform: translateX(-31px);
+}
