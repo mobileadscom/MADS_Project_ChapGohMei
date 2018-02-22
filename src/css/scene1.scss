@@ -1,5 +1,5 @@
 /* --- Scene 1 */
-#scene1 .content {
+/*#scene1 .content {
   // img {
   //   width: 95%;
   //   object-fit: contain;
@@ -13,5 +13,58 @@
   //   align-items: center;
   //   align-self: center;
   // }
-}
+}*/
 /* /-- Scene 1 */
+
+#scene1 .content {
+  img {
+    display: block;
+    object-fit: cover;
+    object-position: 50% 50%;
+    margin: auto;
+    height: 100%;
+  }
+
+  div {
+    display: block;
+  }
+
+  .img-start {
+    height: 55%;
+    position: relative;
+
+    img {
+      position: absolute;
+      bottom: -15px;
+      height: 80%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  
+  .cta-fill {
+    height: 27%;
+  }
+
+  .btn-start {
+    padding-top: 2%;
+    box-sizing: border-box;
+    
+    button {
+      background-color: #FBED20;
+      border: none;
+      border-radius: 18px;
+      width: 260px;
+      height: 40px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      cursor: pointer;
+      background-color: white;
+    }
+  }
+
+}

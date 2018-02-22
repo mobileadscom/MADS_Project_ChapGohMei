@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable no-console */
 /* global window */
 import Vue from 'vue';
@@ -12,9 +13,10 @@ class AdUnit extends Mads {
 
     // Scene 1
     scenes.push(`
-      <div class="img-start"><img class="img-fluid" src="${this.resolve('img/scene1/img-start.png')}" /></div>
-      <div class="cta-fill"><img class="img-fluid" src="${this.resolve('img/scene1/cta-fill.png')}" /></div>
-      <div class="btn-start"><img class="img-fluid" @click="next()" src="${this.resolve('img/scene1/btn-start.png')}" /></div>
+      <div class="header"></div>
+      <div class="img-start"><img class="img-fluid" src="${this.resolve('img/scene1/big-lantern.png')}" /></div>
+      <div class="cta-fill"><img class="img-fluid" src="${this.resolve('img/scene1/cta-fill2.png')}" /></div>
+      <div class="btn-start"><button @click="next()">START NOW</button></div>
       <div class="or-explore"><button class="btn btn-link text-light">or explore the sky or wishes</button></div>
     `);
 
@@ -22,6 +24,7 @@ class AdUnit extends Mads {
 
     // Scene 2
     scenes.push(`
+      <div class="header"></div>
       <div class="cta-choose"><img class="img-fluid" src="${this.resolve('img/scene2/cta-choose.png')}" /></div>
       <div class="lang-select">
         <img @click="changeLang('ch')" src="${this.resolve('img/scene2/mandarin.png')}" />
@@ -33,11 +36,12 @@ class AdUnit extends Mads {
         </div>
       </div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene2/cta-swipe.png')}" /></div>
-      <div class="btn-done"><img class="img-fluid" @click="next(3, 1)" src="${this.resolve('img/scene2/btn-done.png')}" /></div>
+      <div class="btn-done" @click="next(3, 1)">DONE</div>
     `);
 
     // Scene 3
     scenes.push(`
+      <div class="header"></div>
       <div class="cta-send-off" v-if="subScene === 1"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
       <div class="cta-send-off" v-if="subScene === 2"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
       <div class="img-selected" @click="subTwoClick()"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
@@ -68,6 +72,8 @@ class AdUnit extends Mads {
 
     // Scene 4
     scenes.push(`
+      <div class="header"></div>
+      <div class="bg-lantern"><img class="img-fluid" src="${this.resolve('img/scene4/img-lanterns.png')}" /></div>
       <div class="cta-wish"><img class="img-fluid" src="${this.resolve('img/scene6/cta-catch.png')}" /></div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
       <div class="actions">
@@ -78,6 +84,7 @@ class AdUnit extends Mads {
 
     // Scene 5
     scenes.push(`
+        <div class="header"></div>
         <img class="img-fluid" src="${this.resolve('img/scene7/cta-another.png')}" />
         <div class="actions">
           <a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" /></a>
@@ -101,7 +108,7 @@ class AdUnit extends Mads {
     this.vue = new Vue({
       el: '#ad-container',
       data: {
-        scene: 1,
+        scene: 4,
         subScene: 1,
         selectedImg: root.resolve('img/scene2/lantern-eng-1.png'),
         sceneTransition: 'scene-default',
@@ -128,6 +135,7 @@ class AdUnit extends Mads {
                       breakpoint: 600,
                       settings: {
                         slidesToShow: 1,
+                        slidesToScroll: 1,
                         centerPadding: '100px',
                       },
                     },
@@ -233,6 +241,19 @@ class AdUnit extends Mads {
         body {
           background-image: url(${this.resolve('img/bg-desktop.png')});
         }
+      }
+
+      #scene1 .img-start {
+        background-image: url(${this.resolve('img/scene1/sky-lanterns.png')});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center top;
+      }
+
+      .scenes .header {
+        background-image: url(${this.resolve('img/logo.png')});
+        background-repeat: no-repeat;
+        background-size: contain;
       }
       `];
   }
