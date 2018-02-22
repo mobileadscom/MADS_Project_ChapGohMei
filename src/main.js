@@ -71,24 +71,27 @@ class AdUnit extends Mads {
     //   `);
 
     // Scene 4
+
+    //<div class="bg-lantern"><img class="img-fluid" src="${this.resolve('img/scene4/img-lanterns.png')}" /></div>
     scenes.push(`
       <div class="header"></div>
       <div class="bg-lantern"><img class="img-fluid" src="${this.resolve('img/scene4/img-lanterns.png')}" /></div>
       <div class="cta-wish"><img class="img-fluid" src="${this.resolve('img/scene6/cta-catch.png')}" /></div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
       <div class="actions">
-      <a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" /></a>
-        <img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish.png')}" />
+      <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
+      <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
       </div>
       `);
 
     // Scene 5
     scenes.push(`
         <div class="header"></div>
-        <img class="img-fluid" src="${this.resolve('img/scene7/cta-another.png')}" />
+        <div class="bg-lantern"><img class="img-fluid" src="${this.resolve('img/scene4/img-lanterns.png')}" /></div>
+        <div class="wish"><img class="img-fluid" src="${this.resolve('img/scene7/cta-another.png')}" /></div>
         <div class="actions">
-          <a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" /></a>
-          <img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish.png')}" />
+          <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
+          <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
         </div>
         `);
 
@@ -108,7 +111,7 @@ class AdUnit extends Mads {
     this.vue = new Vue({
       el: '#ad-container',
       data: {
-        scene: 4,
+        scene: 1,
         subScene: 1,
         selectedImg: root.resolve('img/scene2/lantern-eng-1.png'),
         sceneTransition: 'scene-default',
