@@ -24,52 +24,64 @@ class AdUnit extends Mads {
     scenes.push(`
       <div class="cta-choose"><img class="img-fluid" src="${this.resolve('img/scene2/cta-choose.png')}" /></div>
       <div class="lang-select">
-        <img src="${this.resolve('img/scene2/mandarin.png')}" />
-        <img src="${this.resolve('img/scene2/english.png')}" />
+        <img @click="changeLang('ch')" src="${this.resolve('img/scene2/mandarin.png')}" />
+        <img @click="changeLang('eng')" src="${this.resolve('img/scene2/english.png')}" />
       </div>
-      <div class="lantern-wrapper">
+      <div class="lantern-wrapper" ref="lantern-selector">
         <div class="lantern-select">
           ${sliders.map(i => `<div><img src="${this.resolve(`img/scene2/lantern-eng-${i}.png`)}" /></div>`).join('')}
         </div>
       </div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene2/cta-swipe.png')}" /></div>
-      <div class="btn-done"><img class="img-fluid" @click="next()" src="${this.resolve('img/scene2/btn-done.png')}" /></div>
+      <div class="btn-done"><img class="img-fluid" @click="next(3, 1)" src="${this.resolve('img/scene2/btn-done.png')}" /></div>
     `);
 
     // Scene 3
     scenes.push(`
-      <div class="cta-send-off"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
-      <div class="img-selected"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
-      <div class="cta-flickup"><img class="img-fluid" src="${this.resolve('img/scene3/cta-flickup.png')}" /></div>
+      <div class="cta-send-off" v-if="subScene === 1"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
+      <div class="cta-send-off" v-if="subScene === 2"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
+      <div class="img-selected" @click="subTwoClick()"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
+      <div v-if="subScene === 3" class="cta-share-on" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
+      <div v-if="subScene === 3" class="cta-shares">
+        <img class="img-fluid" src="${this.resolve('img/shares/btn-share-fb.png')}" />
+        <img class="img-fluid" src="${this.resolve('img/shares/btn-share-twitter.png')}" />
+        <a :href="selectedImg" download="wish-lantern"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-download.png')}" /></a>
+      </div>
+      <div class="cta-flickup" v-if="subScene === 1"><img class="img-fluid" src="${this.resolve('img/scene3/cta-flickup.png')}" /></div>
       `);
+
+    // // Scene 4
+    // scenes.push(`
+    //   <div class="cta-lantern"><img class="img-fluid"
+    // src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
+    //   <div class="img-selected" @click="next()">
+    // <img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
+    //   `);
+    //
+    // // Scene 5
+    // scenes.push(`
+    //   <div class="img-selected"><img class="img-fluid"
+    // ref="img-selected" :src='selectedImg' /></div>
+    //   <div class="cta-share-on" @click="next()">
+    // <img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
+    //   `);
 
     // Scene 4
-    scenes.push(`
-      <div class="cta-lantern"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
-      <div class="img-selected" @click="next()"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
-      `);
-
-    // Scene 5
-    scenes.push(`
-      <div class="img-selected"><img class="img-fluid" ref="img-selected" :src='selectedImg' /></div>
-      <div class="cta-share-on" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
-      `);
-
-    // Scene 6
     scenes.push(`
       <div class="cta-wish"><img class="img-fluid" src="${this.resolve('img/scene6/cta-catch.png')}" /></div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
       <div class="actions">
-        <img class="img-fluid" src="${this.resolve('img/scene6/btn-wish.png')}" />
-        <img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" />
+      <a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" /></a>
+        <img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish.png')}" />
       </div>
       `);
 
-    // Scene 7
+    // Scene 5
     scenes.push(`
+        <img class="img-fluid" src="${this.resolve('img/scene7/cta-another.png')}" />
         <div class="actions">
-          <img class="img-fluid" src="${this.resolve('img/scene6/btn-wish.png')}" />
-          <img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" />
+          <a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch.png')}" /></a>
+          <img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish.png')}" />
         </div>
         `);
 
@@ -89,9 +101,11 @@ class AdUnit extends Mads {
     this.vue = new Vue({
       el: '#ad-container',
       data: {
-        scene: 4,
+        scene: 1,
+        subScene: 1,
         selectedImg: root.resolve('img/scene2/lantern-eng-1.png'),
         sceneTransition: 'scene-default',
+        lang: 'eng',
       },
       watch: {
         scene: {
@@ -119,6 +133,10 @@ class AdUnit extends Mads {
                     },
                   ],
                 });
+
+                $('.lantern-select').on('beforeChange', (slick, currentSlide, nextSlide) => {
+                  root.vue.$data.selectedImg = root.resolve(`img/scene2/lantern-${root.vue.$data.lang}-${nextSlide + 2}.png`);
+                });
               });
             }
 
@@ -127,29 +145,33 @@ class AdUnit extends Mads {
               console.log('load orientation changes');
               window.addEventListener('deviceorientation', (e) => {
                 if (e.gamma > 10) {
-                  root.vue.next(4);
+                  if (root.vue.$data.subScene === 1) {
+                    root.vue.next(3, 2);
+                  }
                 }
               });
               root.loadJS(root.resolve('js/hammer.min.js')).then(() => {
                 const hammertime = new window.Hammer(root.vue.$refs['img-selected']);
                 hammertime.on('pan', (ev) => {
                   if (ev.additionalEvent === 'panup') {
-                    root.vue.next(4);
+                    if (root.vue.$data.subScene === 1) {
+                      root.vue.next(3, 2);
+                    }
                   }
                 });
               });
             }
 
             // If Scene 6 Load HammerJS for panleft or panright
-            if (val === 6) {
+            if (val === 4) {
               root.loadJS(root.resolve('js/hammer.min.js'))
                 .then(root.loadJS(root.resolve('js/TweenLite.min.js')))
                 .then(() => {
-                  const hammertime = new window.Hammer(root.vue.$refs.scene6);
+                  const hammertime = new window.Hammer(root.vue.$refs.scene4);
                   hammertime.on('pan', (ev) => {
                     if (ev.additionalEvent === 'panleft' || ev.additionalEvent === 'panright') {
                       root.vue.$data.sceneTransition = 'scene-side-translate';
-                      root.vue.next(7);
+                      root.vue.next(5);
                     }
                   });
                 });
@@ -158,14 +180,33 @@ class AdUnit extends Mads {
         },
       },
       methods: {
-        next(to) {
+        changeLang(lang) {
+          this.selectedLang = lang;
+          $(this.$refs['lantern-selector']).find('.slick-slide').each((index, slide) => {
+            $(slide).find('img').attr('src',
+              $(slide).find('img').attr('src').replace(lang === 'eng' ? 'ch' : 'eng', lang),
+            );
+          });
+        },
+        subTwoClick() {
+          if (this.subScene === 2) {
+            this.next(3, 3);
+          }
+        },
+        next(to, subTo) {
           this.scene = typeof to !== 'undefined'
             ? to
             : this.scene + 1;
 
-          if (this.scene === 3) {
+          if (typeof subTo !== 'undefined') {
+            this.subScene = subTo;
+          }
+
+          if (to === 3) {
             const currentSlide = $('.lantern-select').slick('slickCurrentSlide');
-            this.selectedImg = root.resolve(`img/scene2/lantern-eng-${currentSlide + 1}.png`);
+            if (typeof currentSlide === 'number') {
+              this.selectedImg = root.resolve(`img/scene2/lantern-${root.vue.$data.lang}-${currentSlide + 1}.png`);
+            }
           }
         },
       },
