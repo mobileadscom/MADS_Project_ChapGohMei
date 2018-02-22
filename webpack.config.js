@@ -45,9 +45,11 @@ module.exports = function(env) {
 
   if (env.production) {
     plugins.push(new UglifyJSPlugin({
-      comments: false,
-      compress: {
-        drop_console: true
+      uglifyOptions: {
+        comments: false,
+        compress: {
+          drop_console: true
+        }
       }
     }));
   }
@@ -78,7 +80,7 @@ module.exports = function(env) {
       alias: {
         'vue$': 'vue/dist/vue.esm.js',
         'bootstrap': path.join(__dirname, 'node_modules/bootstrap'),
-        'slick-carousel': path.join(__dirname, 'node_modules/slick-carousel'),
+        'slick-carousel': path.join(__dirname, 'node_modules/slick-carousel')
       }
     },
     module: {
