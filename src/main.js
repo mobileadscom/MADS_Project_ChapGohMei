@@ -136,17 +136,18 @@ class AdUnit extends Mads {
                 $('.lantern-select').slick({
                   centerMode: true,
                   adaptiveHeight: true,
-                  centerPadding: '60px',
+                  // centerPadding: '60px',
                   slidesToShow: 3,
+                  slidesToScroll: 1,
                   infinite: true,
                   respondTo: 'slider',
                   responsive: [
                     {
-                      breakpoint: 600,
+                      breakpoint: 1025,
                       settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        centerPadding: '100px'
+                        // centerPadding: '100px'
                       }
                     }
                   ]
