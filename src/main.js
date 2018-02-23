@@ -77,6 +77,7 @@ class AdUnit extends Mads {
       <div class="header"></div>
       <div class="cta-wish"><img class="img-fluid" src="${this.resolve('img/scene6/cta-catch.png')}" /></div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
+      <div ref="wishes" class="wishes"><div class="wish">Another wish has been released!<div ref="location" class="location"> {{wishes[wishNo]}} </div></div></div>
       <div class="actions">
       <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
       <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
@@ -117,7 +118,17 @@ class AdUnit extends Mads {
         selectedImg: root.resolve('img/scene2/lantern-eng-1.png'),
         sceneTransition: 'scene-default',
         lang: 'eng',
-        hideCtaWish: false
+        hideCtaWish: false,
+        wishes: [
+          'Seberang Perai, Penang', 'Georgetown, Penang', 'Petaling Jaya, Selangor', 'Kajang, Selangor', 'Klang, Selangor', 
+          'Subang Jaya, Selangor', 'Ipoh, Perak', 'Selayang, Selangor', 'Shah Alam, Selangor', 'Iskandar Puteri, Johor', 'Johor Bahru, Johor',
+          'Malacca City, Malacca', 'Ampang Jaya, Selangor', 'Kota Kinabalu, Sabah', 'Sungai Petani, Kedah', 'Kuantan, Pahang', 'Alor Setar, Kedah',
+          'Tawau, Sabah', 'Sandakan, Sabah', 'Kuala Terengganu, Terengganu', 'Kuching, Sarawak', 'Kota Bahru, Kelantan', 'Seremban, Negeri Sembilan',
+          'Kulim, Kedah', 'Padawan, Sarawak', 'Taiping, Perak', 'Miri, Sarawak', 'Kulai, Johor', 'Kangsar, Perlis', 'Kuala Langat, Selangor', 'Kubang Pasu, Kedah',
+          'Bintulu, Sarawak', 'Manjung, Perak', 'Batu Pahat, Johor', 'Sepang, Selangor', 'Kuala Selangor, Selangor', 'Muar, Johor',
+          'Nilai, Negeri Sembilan', 'Alor Gajah, Malacca', 'Sibu, Sarawak'
+        ],
+        wishNo: 0
       },
       computed: {
         twitter_share() {
@@ -189,11 +200,43 @@ class AdUnit extends Mads {
                   if (ev.additionalEvent === 'panleft' || ev.additionalEvent === 'panright') {
                     root.vue.$data.hideCtaWish = true
                   }
-                }).on('tap', (ev) => {
-                  if (root.vue.$data.hideCtaWish) {
+                }).on('swipe', (ev) => {
+                  console.log(ev);
+                  var direction = ev.direction == 2 ? 'Left' : 'Right';
+                  root.vue.$refs['wishes'].style.display = 'block';
+                  var wish = root.vue.$refs['location'];
+                  wish.classList.add('leave' + direction);
+                  setTimeout(function() {
+                    wish.classList.remove('leave' + direction);
+                    wish.classList.add('enter' + direction);
+                    if (direction == 'Left') {
+                      var nextWish = root.vue.$data.wishNo + 1;
+                      if (nextWish == root.vue.$data.wishes.length) {
+                        root.vue.$data.wishNo = 0;
+                      }
+                      else {
+                        root.vue.$data.wishNo = nextWish;
+                      }
+                    }
+                    else {
+                      var prevWish = root.vue.$data.wishNo - 1;
+                      if (prevWish < 0) {
+                        root.vue.$data.wishNo = root.vue.$data.wishes.length - 1;
+                      }
+                      else {
+                        root.vue.$data.wishNo = prevWish;
+                      }
+                    }
+                    
+                    setTimeout(function() {
+                      wish.classList.remove('enter' + direction);
+                    }, 300);
+                  }, 300);
+                  
+                  /*if (root.vue.$data.hideCtaWish) {
                     root.vue.$data.sceneTransition = 'scene-side-translate'
                     root.vue.next(5)
-                  }
+                  }*/
                 })
               });
             }

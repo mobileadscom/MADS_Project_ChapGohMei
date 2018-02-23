@@ -42,6 +42,37 @@
     	}
     }
 
+    .wishes {
+    	display: none;
+    	position: relative;
+      
+      .location {
+      	position: absolute;
+      	left: 50%;
+      	transform: translateX(-50%);
+      }
+
+    	.location.leaveLeft {
+    		animation-name: wishLeaveLeft;
+    		animation-duration: 0.3s;
+    	}
+
+    	.location.enterLeft {
+    		animation-name: wishEnterLeft;
+    		animation-duration: 0.3s;
+    	}
+
+    	.location.leaveRight {
+    		animation-name: wishLeaveRight;
+    		animation-duration: 0.3s;
+    	}
+
+    	.location.enterRight {
+    		animation-name: wishEnterRight;
+    		animation-duration: 0.3s;
+    	}
+    }
+
     .actions {
     	display: flex;
     	position: absolute;
@@ -62,6 +93,26 @@
     	}
     }
   }
+}
+
+@keyframes wishLeaveLeft {
+  from {left: 50%;}
+  to {left: -50%;}
+}
+
+@keyframes wishEnterLeft {
+  from {left: 150%;}
+  to {left: 50%;}
+}
+
+@keyframes wishEnterRight {
+  from {left: -50%;}
+  to {left: 50%;}
+}
+
+@keyframes wishLeaveRight {
+  from {left: 50%;}
+  to {left: 150%;}
 }
 
 .hideCtaWish {
