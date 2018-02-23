@@ -1,0 +1,32 @@
+.scene-default-enter-active, .scene-default-leave-active {
+  transition: all 1s;
+}
+
+.scene-default-enter, .scene-default-leave-active {
+  opacity: 0;
+}
+
+.scene-default-enter {
+  transform: defaultY(31px);
+}
+
+.scene-default-leave-active {
+  transform: defaultY(-31px);
+}
+
+
+.scene-side-translate-enter-active, .scene-side-translate-leave-active {
+  transition: all 1s;
+}
+
+.scene-side-translate-enter, .scene-side-translate-leave-active {
+  opacity: 0;
+}
+
+.scene-side-translate-enter {
+  transform: translateX(31px);
+}
+
+.scene-side-translate-leave-active {
+  transform: translateX(-31px);
+}
