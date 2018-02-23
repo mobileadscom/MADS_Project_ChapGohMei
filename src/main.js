@@ -44,9 +44,9 @@ class AdUnit extends Mads {
       <div class="header"></div>
       <div class="cta-send-off" v-if="subScene === 1"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
       <div class="cta-lantern" v-if="subScene === 2"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
-      <div class="img-selected" @click="subTwoClick()"><img ref="img-selected" :src='selectedImg' /></div>
-      <div v-if="subScene === 3" class="cta-share-on" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
-      <div v-if="subScene === 3" class="cta-shares">
+      <div class="img-selected" ref="mainLantern"><img ref="img-selected" :src='selectedImg' /></div>
+      <div v-show="subScene === 3" class="cta-share-on" ref="ctaShareOn" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
+      <div v-show="subScene === 3" class="cta-shares" ref="ctaShares">
         <a :href="'https://www.facebook.com/sharer/sharer.php?u=https://thecomingtogether.com.my/lanterns/'+selectedImg.split('/').pop()" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-fb.png')}" /></a>
         <a :href="twitter_share" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-twitter.png')}" /></a>
         <a :href="selectedImg" download="wish-lantern"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-download.png')}" /></a>
@@ -78,7 +78,7 @@ class AdUnit extends Mads {
       <div class="cta-wish"><img class="img-fluid" src="${this.resolve('img/scene6/cta-catch.png')}" /></div>
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
       <div class="actions">
-      <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
+      <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
       <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
       </div>
       `);
@@ -89,7 +89,7 @@ class AdUnit extends Mads {
         <div class="header"></div>
         <div class="wish"><img class="img-fluid" src="${this.resolve('img/scene7/cta-another.png')}" /></div>
         <div class="actions">
-          <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
+          <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
           <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
         </div>
         `);
@@ -213,6 +213,9 @@ class AdUnit extends Mads {
         subTwoClick() {
           if (this.subScene === 2) {
             this.next(3, 3);
+            TweenMax.to(root.vue.$refs.mainLantern, 1, {top:"0", scale: 1, opacity: 1, ease:Linear.easeNone})
+            TweenMax.fromTo(root.vue.$refs.ctaShareOn, 1, {bottom:"-300px", scale: 0.1, opacity: 0, ease:Linear.easeNone}, {bottom:"0", scale: 1, opacity: 1, ease:Linear.easeNone})
+            TweenMax.fromTo(root.vue.$refs.ctaShares, 1, {bottom:"-300px", scale: 0.1, opacity: 0, ease:Linear.easeNone}, {bottom:"0", delay: 0.5, scale: 1, opacity: 1, ease:Linear.easeNone})
           }
         },
         next(to, subTo) {
@@ -235,6 +238,14 @@ class AdUnit extends Mads {
                   console.log('loaded particle')
                 })
               })
+
+              root.loadJS(root.resolve('js/TweenMax.min.js'))
+                .then(root.loadJS(root.resolve('js/CSSPlugin.min.js')))
+                .then(() => {
+                  TweenMax.to(root.vue.$refs.mainLantern, 1, {top:"-300px", scale: 0.1, opacity: 0, ease:Linear.easeNone, onComplete () {
+                    root.vue.subTwoClick()
+                  }});
+                });
             }
 
             const currentSlide = $('.lantern-select').slick('slickCurrentSlide');
