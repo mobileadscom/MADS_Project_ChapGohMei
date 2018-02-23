@@ -1,124 +1,160 @@
 #scene4 {
   .content {
-/*    padding-bottom: 5rem;
+    .wish {
+      color: white;
+      font-size: 12px;
+
+      .location {
+        font-size: 35px;
+        font-family: 'SummerLove', serif;
+        // width: 100%;
+      }
+    }
+
+    .wishes {
+      padding-top: 120px;
+    }
+    //   height: 100%;
+    //   padding-top: 102px;
+    //   display: flex;
+    //   justify-content: center;
+    // }
+    /*    padding-bottom: 5rem;
     padding-top: 5rem;*/
     display: block;
 
     > div {
-    	position: relative;
+      position: relative;
       z-index: 2;
     }
 
     .bg-lantern {
-    	position: absolute;
-    	width: 100%;
-    	z-index: 1;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
 
-    	img {
-    		position: absolute;
-		    width: 100%;
-		    left: 50%;
-		    transform: translateX(-50%);
-		    top: -50px;
-		    z-index: 1;
+      img {
+        position: absolute;
+        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -50px;
+        z-index: 1;
         max-width: 365px;
-    	}
+      }
     }
 
     .cta-wish {
-    	margin-top: 120px;
-    	height: 20%;
+      margin-top: 120px;
+      height: 20%;
 
-    	img {
-    		height: 100%;
-    	}
+      img {
+        height: 100%;
+      }
     }
 
     .cta-swipe {
-    	height: 20%;
+      height: 20%;
 
-    	img {
-    		height: 100%;
-    	}
+      img {
+        height: 100%;
+      }
     }
 
     .wishes {
-    	display: none;
-    	position: relative;
-      
+      display: none;
+      position: relative;
+
       .location {
-      	position: absolute;
-      	left: 50%;
-      	transform: translateX(-50%);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
       }
 
-    	.location.leaveLeft {
-    		animation-name: wishLeaveLeft;
-    		animation-duration: 0.3s;
-    	}
+      .location.leaveLeft {
+        animation-name: wishLeaveLeft;
+        animation-duration: 0.3s;
+      }
 
-    	.location.enterLeft {
-    		animation-name: wishEnterLeft;
-    		animation-duration: 0.3s;
-    	}
+      .location.enterLeft {
+        animation-name: wishEnterLeft;
+        animation-duration: 0.3s;
+      }
 
-    	.location.leaveRight {
-    		animation-name: wishLeaveRight;
-    		animation-duration: 0.3s;
-    	}
+      .location.leaveRight {
+        animation-name: wishLeaveRight;
+        animation-duration: 0.3s;
+      }
 
-    	.location.enterRight {
-    		animation-name: wishEnterRight;
-    		animation-duration: 0.3s;
-    	}
+      .location.enterRight {
+        animation-name: wishEnterRight;
+        animation-duration: 0.3s;
+      }
     }
 
     .actions {
-    	display: flex;
-    	position: absolute;
-    	bottom: 0px;
-    	width: 100%;
+      display: flex;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
       justify-content: center;
 
       > div {
-        padding: 0px 2px;
+        padding: 0 2px;
       }
 
-    	img {
-    		max-height: 150px;
-    	}
+      img {
+        max-height: 150px;
+      }
 
-    	img:hover {
-    		cursor: pointer;
-    	}
+      img:hover {
+        cursor: pointer;
+      }
     }
   }
 }
-
 @keyframes wishLeaveLeft {
-  from {left: 50%;}
-  to {left: -50%;}
-}
+  from {
+    left: 50%;
+  }
 
+  to {
+    left: -50%;
+  }
+}
 @keyframes wishEnterLeft {
-  from {left: 150%;}
-  to {left: 50%;}
-}
+  from {
+    left: 150%;
+  }
 
+  to {
+    left: 50%;
+  }
+}
 @keyframes wishEnterRight {
-  from {left: -50%;}
-  to {left: 50%;}
-}
+  from {
+    left: -50%;
+  }
 
+  to {
+    left: 50%;
+  }
+}
 @keyframes wishLeaveRight {
-  from {left: 50%;}
-  to {left: 150%;}
+  from {
+    left: 50%;
+  }
+
+  to {
+    left: 150%;
+  }
 }
 
 .hideCtaWish {
   .cta-swipe {
     display: none;
   }
+
   .cta-wish {
     display: none;
   }

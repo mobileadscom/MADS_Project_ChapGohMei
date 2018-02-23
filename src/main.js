@@ -17,7 +17,7 @@ class AdUnit extends Mads {
       <div class="img-start"><img class="img-fluid" src="${this.resolve('img/scene1/big-lantern.png')}" /></div>
       <div class="cta-fill"><img class="img-fluid" src="${this.resolve('img/scene1/cta-fill2.png')}" /></div>
       <div class="btn-start"><button @click="next()">START NOW</button></div>
-      <div class="or-explore" @click="next(4)"><button class="btn btn-link text-light">or explore the sky or wishes</button></div>
+      <div class="or-explore" @click="next(4)"><button class="text-light">or explore the sky or wishes</button></div>
     `);
 
     const sliders = [1, 2, 3, 4, 5];
@@ -28,7 +28,7 @@ class AdUnit extends Mads {
       <div class="cta-choose"><img class="img-fluid" src="${this.resolve('img/scene2/cta-choose.png')}" /></div>
       <div class="lang-select">
         <img @click="changeLang('ch')" src="${this.resolve('img/scene2/mandarin.png')}" />
-        <img @click="changeLang('eng')" src="${this.resolve('img/scene2/english.png')}" />
+        <img @click="changeLang('eng')" class="eng" src="${this.resolve('img/scene2/english.png')}" />
       </div>
       <div class="lantern-wrapper" ref="lantern-selector">
         <div class="lantern-select">
@@ -42,8 +42,8 @@ class AdUnit extends Mads {
     // Scene 3
     scenes.push(`
       <div class="header"></div>
-      <div class="cta-send-off" v-if="subScene === 1"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
-      <div class="cta-lantern" v-if="subScene === 2"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
+      <div class="cta-send-off" v-show="subScene === 1" ref="cta-send-off"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
+      <div class="cta-lantern" ref="cta-lantern" style="display:none;opacity:0;"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
       <div class="img-selected" ref="mainLantern"><img ref="img-selected" :src='selectedImg' /></div>
       <div v-show="subScene === 3" class="cta-share-on" ref="ctaShareOn" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
       <div v-show="subScene === 3" class="cta-shares" ref="ctaShares">
@@ -51,7 +51,7 @@ class AdUnit extends Mads {
         <a :href="twitter_share" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-twitter.png')}" /></a>
         <a :href="selectedImg" download="wish-lantern"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-download.png')}" /></a>
       </div>
-      <div class="cta-flickup" v-if="subScene === 1"><img class="img-fluid" src="${this.resolve('img/scene3/cta-flickup.png')}" /></div>
+      <div class="cta-flickup" v-show="subScene === 1" ref="cta-flickup"><img class="img-fluid" src="${this.resolve('img/scene3/cta-flickup.png')}" /></div>
       `);
 
     //  Scene 4
@@ -95,10 +95,12 @@ class AdUnit extends Mads {
         </div>
         `);
 
+        // <div class="pjs" @click="next(5)"><div id="particles-js" :class="{hideParticle: scene === 2 || (scene === 3 && subScene === 1) || (scene === 3 && subScene === 2) }"></div></div>
+
     return `
       <div id="ad-container" class="block" :class="{'hideCtaWish': hideCtaWish}">
-        <div class="pjs" @click="next(5)"><div id="particles-js" :class="{hideParticle: scene === 2 || (scene === 3 && subScene === 1) || (scene === 3 && subScene === 2) }"></div></div>
-        <div id="particles-js1" :class="{hideParticle: scene === 2 || (scene === 3 && subScene === 1) || (scene === 3 && subScene !== 2) || scene === 4 || scene === 5 }"></div>
+        <div class="pjs" @click="next(5)"><div id="particles-js" :class="{hideParticle: scene === 2 && subScene === 1 }"></div></div>
+        <div id="particles-js1" :class="{hideParticle: true }"></div>
         <transition :name="sceneTransition">
           ${scenes.map((s, i) => `<div id="scene${i + 1}" ref="scene${i + 1}" class="scenes" key="${i}" v-if="scene === ${i + 1}">
               <div class="content" :class="{ subScene3: subScene === 3 }">${s}</div>
@@ -120,7 +122,7 @@ class AdUnit extends Mads {
         lang: 'eng',
         hideCtaWish: false,
         wishes: [
-          'Seberang Perai, Penang', 'Georgetown, Penang', 'Petaling Jaya, Selangor', 'Kajang, Selangor', 'Klang, Selangor', 
+          'Seberang Perai, Penang', 'Georgetown, Penang', 'Petaling Jaya, Selangor', 'Kajang, Selangor', 'Klang, Selangor',
           'Subang Jaya, Selangor', 'Ipoh, Perak', 'Selayang, Selangor', 'Shah Alam, Selangor', 'Iskandar Puteri, Johor', 'Johor Bahru, Johor',
           'Malacca City, Malacca', 'Ampang Jaya, Selangor', 'Kota Kinabalu, Sabah', 'Sungai Petani, Kedah', 'Kuantan, Pahang', 'Alor Setar, Kedah',
           'Tawau, Sabah', 'Sandakan, Sabah', 'Kuala Terengganu, Terengganu', 'Kuching, Sarawak', 'Kota Bahru, Kelantan', 'Seremban, Negeri Sembilan',
@@ -136,6 +138,16 @@ class AdUnit extends Mads {
         }
       },
       watch: {
+        subScene: {
+          immediate: true,
+          handler: (val) => {
+            // root.loadJS(root.resolve('js/particles.js')).then(() => {
+            //   particlesJS.load('particles-js1', root.resolve('js/particlesjs-config.json'), () => {
+            //     console.log('loaded particle')
+            //   })
+            // })
+          }
+        },
         scene: {
           immediate: true,
           handler: (val) => {
@@ -143,6 +155,7 @@ class AdUnit extends Mads {
             if (val === 2) {
               root.loadURLCSS(root.resolve('css/vendors/slick.css'));
               root.loadURLCSS(root.resolve('css/vendors/slick-theme.css'));
+              $('lantern-select').css('opacity', 0)
               root.loadJS(root.resolve('js/slick.min.js')).then(() => {
                 $('.lantern-select').slick({
                   centerMode: true,
@@ -164,10 +177,35 @@ class AdUnit extends Mads {
                   ]
                 });
 
+                $('.lantern-select').on('init', () => {
+                  $('lantern-select').css('opacity', 1)
+                })
+
                 $('.lantern-select').on('beforeChange', (slick, currentSlide, nextSlide) => {
                   root.vue.$data.selectedImg = root.resolve(`img/scene2/lantern-${root.vue.$data.lang}-${nextSlide + 2}.png`);
                 });
               });
+            }
+
+            const scene3Interaction = () => {
+              if (root.vue.$data.subScene === 1) {
+                root.loadJS(root.resolve('js/TweenMax.min.js'))
+                  .then(root.loadJS(root.resolve('js/CSSPlugin.min.js')))
+                  .then(() => {
+                    TweenMax.to(root.vue.$refs['cta-send-off'], 1, {opacity:0, ease:Linear.easeNone})
+                    TweenMax.to(root.vue.$refs['cta-flickup'], 1, {opacity:0, ease:Linear.easeNone, onComplete() {
+                      root.vue.$data.subScene = 2
+                    }})
+
+                    TweenLite.set(root.vue.$refs['cta-lantern'], { display: 'block' });
+                    TweenMax.to(root.vue.$refs['cta-lantern'], 1, {opacity:1, delay: 0.9, ease:Linear.easeNone})
+                    TweenMax.To(root.vue.$refs.mainLantern, 4,{top:"-500px", scale: 0.3, opacity: 0.5, delay: 1.5, ease:Linear.easeNone, onComplete () {
+                      root.vue.subTwoClick()
+                      TweenLite.set(root.vue.$refs['cta-lantern'], { display: 'none' });
+                    }});
+
+                  });
+              }
             }
 
             // If Scene 3 Load Orientation/HammerJS for panup/phoneup
@@ -175,19 +213,18 @@ class AdUnit extends Mads {
               console.log('load orientation changes');
               window.addEventListener('deviceorientation', (e) => {
                 if (e.gamma > 10) {
-                  if (root.vue.$data.subScene === 1) {
-                    root.vue.next(3, 2);
-                  }
+                  scene3Interaction();
                 }
               });
               root.loadJS(root.resolve('js/hammer.min.js')).then(() => {
-                const hammertime = new window.Hammer(root.vue.$refs['img-selected']);
-                hammertime.on('pan', (ev) => {
-                  if (ev.additionalEvent === 'panup') {
+                const hammertime = new window.Hammer(root.vue.$refs.scene3);
+                hammertime.on('swipe pan', (ev) => {
+                  console.log(ev)
+                  // if (ev.additionalEvent === 'panup') {
                     if (root.vue.$data.subScene === 1) {
-                      root.vue.next(3, 2);
+                      scene3Interaction();
                     }
-                  }
+                  // }
                 });
               });
             }
@@ -196,11 +233,13 @@ class AdUnit extends Mads {
             if (val === 4) {
               root.loadJS(root.resolve('js/hammer.min.js')).then(() => {
                 const hammertime = new window.Hammer(root.vue.$refs.scene4);
-                hammertime.on('pan', (ev) => {
-                  if (ev.additionalEvent === 'panleft' || ev.additionalEvent === 'panright') {
-                    root.vue.$data.hideCtaWish = true
-                  }
-                }).on('swipe', (ev) => {
+                // .on('pan', (ev) => {
+                //   if (ev.additionalEvent === 'panleft' || ev.additionalEvent === 'panright') {
+                //     root.vue.$data.hideCtaWish = true
+                //   }
+                // })
+                hammertime.on('swipe', (ev) => {
+                  root.vue.$data.hideCtaWish = true
                   console.log(ev);
                   var direction = ev.direction == 2 ? 'Left' : 'Right';
                   root.vue.$refs['wishes'].style.display = 'block';
@@ -227,12 +266,12 @@ class AdUnit extends Mads {
                         root.vue.$data.wishNo = prevWish;
                       }
                     }
-                    
+
                     setTimeout(function() {
                       wish.classList.remove('enter' + direction);
                     }, 300);
                   }, 300);
-                  
+
                   /*if (root.vue.$data.hideCtaWish) {
                     root.vue.$data.sceneTransition = 'scene-side-translate'
                     root.vue.next(5)
@@ -276,25 +315,13 @@ class AdUnit extends Mads {
           }
 
           if (to === 3) {
-            if (subTo === 2) {
-              root.loadJS(root.resolve('js/particles.js')).then(() => {
-                particlesJS.load('particles-js1', root.resolve('js/particlesjs-config.json'), () => {
-                  console.log('loaded particle')
-                })
-              })
-
-              root.loadJS(root.resolve('js/TweenMax.min.js'))
-                .then(root.loadJS(root.resolve('js/CSSPlugin.min.js')))
-                .then(() => {
-                  TweenMax.to(root.vue.$refs.mainLantern, 1, {top:"-300px", scale: 0.1, opacity: 0, ease:Linear.easeNone, onComplete () {
-                    root.vue.subTwoClick()
-                  }});
-                });
-            }
-
-            const currentSlide = $('.lantern-select').slick('slickCurrentSlide');
-            if (typeof currentSlide === 'number') {
-              this.selectedImg = root.resolve(`img/scene2/lantern-${root.vue.$data.lang}-${currentSlide + 1}.png`);
+            try {
+              const currentSlide = $('.lantern-select').slick('slickCurrentSlide');
+              if (typeof currentSlide === 'number') {
+                this.selectedImg = root.resolve(`img/scene2/lantern-${root.vue.$data.lang}-${currentSlide + 1}.png`);
+              }
+            } catch (err) {
+                console.log('no slick around');
             }
           }
         }
@@ -320,6 +347,11 @@ class AdUnit extends Mads {
     this.loadURLCSS(this.resolve('css/vendors/bootstrap.css'));
     this.body.className = 'text-center';
     return [`
+      @font-face {
+        font-family: SummerLove;
+        src: url(${this.resolve('css/Summer%20Love.otf')});
+      }
+
       body {
         background-image: url(${this.resolve('img/bg-mobile.png')});
       }

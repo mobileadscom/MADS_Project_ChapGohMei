@@ -15,7 +15,6 @@
   // }
 }*/
 /* /-- Scene 1 */
-
 #scene1 .content {
   img {
     display: block;
@@ -69,4 +68,13 @@
     }
   }
 
+  .or-explore {
+    button {
+      text-decoration: underline;
+      background: none;
+      padding:0;
+      border:0;
+      outline:none;
+    }
+  }
 }

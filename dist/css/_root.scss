@@ -10,6 +10,10 @@ body {
   background-size: 100% 100%;
 }
 
+.eng {
+  height: 14px !important;
+}
+
 #rma-widget {
   height: 100%;
   width: 100%;
@@ -17,7 +21,7 @@ body {
 
 .pjs {
   position: absolute;
-  height: 70%;
+  height: 100%;
   width: 100%;
 }
 
@@ -43,9 +47,14 @@ body {
   justify-content: center;
   > img {
     width: 20%;
+
   }
   > a {
+
     width: 20%;
+    @media screen and (min-width: 768px) {
+      width: 7%;
+    }
   }
 }
 

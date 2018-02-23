@@ -17,15 +17,18 @@
       }
     }
     .cta-lantern {
-      height: 50%;
+      height: 70%;
       margin-bottom: -45px;
-      padding-top: 10%;
+      padding-top: 100px;
       position: relative;
       z-index: 99;
     }
     .img-selected {
       position: relative;
       height: 45%;
+      user-drag: none;
+      user-select: none;
+      pointer-events: none;
       img {
         margin-top: 15px;
       }
@@ -36,12 +39,18 @@
     .cta-share-on {
       height: 25%;
       position: relative;
+      @media screen and (min-width: 768px) {
+        height: 15%;
+      }
     }
   }
 
   .subScene3 {
     .img-selected {
       margin-top: 10%;
+      @media screen and (min-width: 768px) {
+        margin-top: 2%;
+      }
     }
   }
 }
