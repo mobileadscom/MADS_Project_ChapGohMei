@@ -41,15 +41,17 @@
       transform: translateX(-50%);
     }
   }
-  
+
   .cta-fill {
     height: 27%;
   }
 
   .btn-start {
+    position: relative;
+    z-index: 999;
     padding-top: 2%;
     box-sizing: border-box;
-    
+
     button {
       background-color: #FBED20;
       border: none;
