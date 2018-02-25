@@ -17,7 +17,7 @@ class AdUnit extends Mads {
       <div class="img-start"><img class="img-fluid" src="${this.resolve('img/scene1/big-lantern.png')}" /></div>
       <div class="cta-fill"><img class="img-fluid" src="${this.resolve('img/scene1/cta-fill2.png')}" /></div>
       <div class="btn-start"><button @click="next()">START NOW</button></div>
-      <div class="or-explore" @click="next(4)"><button class="text-light">or explore the sky or wishes</button></div>
+      <div class="or-explore" @click="next(4)"><button class="text-light">or explore the sky for wishes</button></div>
     `);
 
     const sliders = [1, 2, 3, 4, 5];
@@ -31,7 +31,7 @@ class AdUnit extends Mads {
         <img @click="changeLang('eng')" class="eng" src="${this.resolve('img/scene2/english.png')}" />
       </div>
       <div class="lantern-wrapper" ref="lantern-selector">
-        <div class="lantern-select">
+        <div class="lantern-select" style="opacity:0;">
           ${sliders.map(i => `<div><img src="${this.resolve(`img/scene2/lantern-eng-${i}.png`)}" /></div>`).join('')}
         </div>
       </div>
@@ -39,11 +39,13 @@ class AdUnit extends Mads {
       <div class="btn-done" @click="next(3, 1)">DONE</div>
     `);
 
+    // <img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" />
+
     // Scene 3
     scenes.push(`
       <div class="header"></div>
-      <div class="cta-send-off" v-show="subScene === 1" ref="cta-send-off"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
-      <div class="cta-lantern" ref="cta-lantern" style="display:none;opacity:0;"><img class="img-fluid" src="${this.resolve('img/scene4/cta-lantern.png')}" /></div>
+      <div class="cta-send-off" ref="cta-send-off"><img class="img-fluid" src="${this.resolve('img/scene3/cta-send-off.png')}" /></div>
+      <div class="cta-lantern" ref="cta-lantern"><span class="look">Look at it go!</span><span class="your_wish">Your Wish<br/>has flown off</span><span class="to_join">to join the other</span><div><span class="counts">{{animatedCount}}</span><span class="label">Lanterns</span></div></div>
       <div class="img-selected" ref="mainLantern"><img ref="img-selected" :src='selectedImg' /></div>
       <div v-show="subScene === 3" class="cta-share-on" ref="ctaShareOn" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
       <div v-show="subScene === 3" class="cta-shares" ref="ctaShares">
@@ -95,7 +97,7 @@ class AdUnit extends Mads {
         </div>
         `);
 
-        // <div class="pjs" @click="next(5)"><div id="particles-js" :class="{hideParticle: scene === 2 || (scene === 3 && subScene === 1) || (scene === 3 && subScene === 2) }"></div></div>
+    // <div class="pjs" @click="next(5)"><div id="particles-js" :class="{hideParticle: scene === 2 || (scene === 3 && subScene === 1) || (scene === 3 && subScene === 2) }"></div></div>
 
     return `
       <div id="ad-container" class="block" :class="{'hideCtaWish': hideCtaWish}">
@@ -121,14 +123,49 @@ class AdUnit extends Mads {
         sceneTransition: 'scene-default',
         lang: 'eng',
         hideCtaWish: false,
+        count: 14543,
+        animatedCount: '14,543',
         wishes: [
-          'Seberang Perai, Penang', 'Georgetown, Penang', 'Petaling Jaya, Selangor', 'Kajang, Selangor', 'Klang, Selangor',
-          'Subang Jaya, Selangor', 'Ipoh, Perak', 'Selayang, Selangor', 'Shah Alam, Selangor', 'Iskandar Puteri, Johor', 'Johor Bahru, Johor',
-          'Malacca City, Malacca', 'Ampang Jaya, Selangor', 'Kota Kinabalu, Sabah', 'Sungai Petani, Kedah', 'Kuantan, Pahang', 'Alor Setar, Kedah',
-          'Tawau, Sabah', 'Sandakan, Sabah', 'Kuala Terengganu, Terengganu', 'Kuching, Sarawak', 'Kota Bahru, Kelantan', 'Seremban, Negeri Sembilan',
-          'Kulim, Kedah', 'Padawan, Sarawak', 'Taiping, Perak', 'Miri, Sarawak', 'Kulai, Johor', 'Kangsar, Perlis', 'Kuala Langat, Selangor', 'Kubang Pasu, Kedah',
-          'Bintulu, Sarawak', 'Manjung, Perak', 'Batu Pahat, Johor', 'Sepang, Selangor', 'Kuala Selangor, Selangor', 'Muar, Johor',
-          'Nilai, Negeri Sembilan', 'Alor Gajah, Malacca', 'Sibu, Sarawak'
+          'Seberang Perai, Penang',
+          'Georgetown, Penang',
+          'Petaling Jaya, Selangor',
+          'Kajang, Selangor',
+          'Klang, Selangor',
+          'Subang Jaya, Selangor',
+          'Ipoh, Perak',
+          'Selayang, Selangor',
+          'Shah Alam, Selangor',
+          'Iskandar Puteri, Johor',
+          'Johor Bahru, Johor',
+          'Malacca City, Malacca',
+          'Ampang Jaya, Selangor',
+          'Kota Kinabalu, Sabah',
+          'Sungai Petani, Kedah',
+          'Kuantan, Pahang',
+          'Alor Setar, Kedah',
+          'Tawau, Sabah',
+          'Sandakan, Sabah',
+          'Kuala Terengganu, Terengganu',
+          'Kuching, Sarawak',
+          'Kota Bahru, Kelantan',
+          'Seremban, Negeri Sembilan',
+          'Kulim, Kedah',
+          'Padawan, Sarawak',
+          'Taiping, Perak',
+          'Miri, Sarawak',
+          'Kulai, Johor',
+          'Kangsar, Perlis',
+          'Kuala Langat, Selangor',
+          'Kubang Pasu, Kedah',
+          'Bintulu, Sarawak',
+          'Manjung, Perak',
+          'Batu Pahat, Johor',
+          'Sepang, Selangor',
+          'Kuala Selangor, Selangor',
+          'Muar, Johor',
+          'Nilai, Negeri Sembilan',
+          'Alor Gajah, Malacca',
+          'Sibu, Sarawak'
         ],
         wishNo: 0
       },
@@ -146,7 +183,33 @@ class AdUnit extends Mads {
             //     console.log('loaded particle')
             //   })
             // })
+            if (val === 2) {
+              root.loadJS(root.resolve('js/Tween.min.js')).then(() => {
+                console.log('loaded tween')
+                root.vue.$data.count += 20;
+              })
+            }
           }
+        },
+        count(val, old) {
+          const vm = this
+          const animate = () => {
+            if (TWEEN.update()) {
+              requestAnimationFrame(animate)
+            }
+          }
+
+          const numberWithCommas = (x) => {
+            return x.toString().replace(/(\d)(?=(\d{3})+$)/g, "$1,");
+          }
+
+          const tweeningN = new TWEEN.Tween({tweeningNumber: old}).easing(TWEEN.Easing.Quadratic.Out).to({
+            tweeningNumber: val
+          }, 10000).onUpdate(() => {
+            vm.animatedCount = numberWithCommas(tweeningN._object.tweeningNumber.toFixed(0))
+          }).start();
+
+          animate()
         },
         scene: {
           immediate: true,
@@ -155,11 +218,14 @@ class AdUnit extends Mads {
             if (val === 2) {
               root.loadURLCSS(root.resolve('css/vendors/slick.css'));
               root.loadURLCSS(root.resolve('css/vendors/slick-theme.css'));
-              $('lantern-select').css('opacity', 0)
               root.loadJS(root.resolve('js/slick.min.js')).then(() => {
+                $('.lantern-select').on('init', () => {
+                  console.log('lantern loaded')
+                  $('.lantern-select').css('opacity', 1)
+                })
+
                 $('.lantern-select').slick({
-                  centerMode: true,
-                  adaptiveHeight: true,
+                  centerMode: true, adaptiveHeight: true,
                   // centerPadding: '60px',
                   slidesToShow: 3,
                   slidesToScroll: 1,
@@ -175,10 +241,6 @@ class AdUnit extends Mads {
                       }
                     }
                   ]
-                });
-
-                $('.lantern-select').on('init', () => {
-                  $('lantern-select').css('opacity', 1)
                 })
 
                 $('.lantern-select').on('beforeChange', (slick, currentSlide, nextSlide) => {
@@ -189,22 +251,35 @@ class AdUnit extends Mads {
 
             const scene3Interaction = () => {
               if (root.vue.$data.subScene === 1) {
-                root.loadJS(root.resolve('js/TweenMax.min.js'))
-                  .then(root.loadJS(root.resolve('js/CSSPlugin.min.js')))
-                  .then(() => {
-                    TweenMax.to(root.vue.$refs['cta-send-off'], 1, {opacity:0, ease:Linear.easeNone})
-                    TweenMax.to(root.vue.$refs['cta-flickup'], 1, {opacity:0, ease:Linear.easeNone, onComplete() {
+                root.loadJS(root.resolve('js/TweenMax.min.js')).then(root.loadJS(root.resolve('js/CSSPlugin.min.js'))).then(() => {
+                  TweenMax.to(root.vue.$refs['cta-send-off'], 1, {
+                    opacity: 0,
+                    ease: Linear.easeNone
+                  })
+                  TweenMax.to(root.vue.$refs['cta-flickup'], 1, {
+                    opacity: 0,
+                    ease: Linear.easeNone,
+                    onComplete() {
                       root.vue.$data.subScene = 2
-                    }})
-
-                    TweenLite.set(root.vue.$refs['cta-lantern'], { display: 'block' });
-                    TweenMax.to(root.vue.$refs['cta-lantern'], 1, {opacity:1, delay: 0.9, ease:Linear.easeNone})
-                    TweenMax.To(root.vue.$refs.mainLantern, 4,{top:"-500px", scale: 0.3, opacity: 0.5, delay: 1.5, ease:Linear.easeNone, onComplete () {
-                      root.vue.subTwoClick()
-                      TweenLite.set(root.vue.$refs['cta-lantern'], { display: 'none' });
-                    }});
-
-                  });
+                      TweenLite.set(root.vue.$refs['cta-lantern'], {display: 'block'});
+                      TweenMax.to(root.vue.$refs['cta-lantern'], 1, {
+                        opacity: 1,
+                        ease: Linear.easeNone
+                      })
+                      TweenMax.to(root.vue.$refs.mainLantern, 4, {
+                        top: "-500px",
+                        scale: 0.3,
+                        opacity: 0.5,
+                        ease: Back.easeIn.config(2),
+                        onComplete() {
+                          root.vue.subTwoClick()
+                          TweenLite.set(root.vue.$refs['cta-send-off'], {display: 'none'});
+                          TweenLite.set(root.vue.$refs['cta-lantern'], {display: 'none'});
+                        }
+                      });
+                    }
+                  })
+                });
               }
             }
 
@@ -221,9 +296,9 @@ class AdUnit extends Mads {
                 hammertime.on('swipe pan', (ev) => {
                   console.log(ev)
                   // if (ev.additionalEvent === 'panup') {
-                    if (root.vue.$data.subScene === 1) {
-                      scene3Interaction();
-                    }
+                  if (root.vue.$data.subScene === 1) {
+                    scene3Interaction();
+                  }
                   // }
                 });
               });
@@ -241,7 +316,9 @@ class AdUnit extends Mads {
                 hammertime.on('swipe', (ev) => {
                   root.vue.$data.hideCtaWish = true
                   console.log(ev);
-                  var direction = ev.direction == 2 ? 'Left' : 'Right';
+                  var direction = ev.direction == 2
+                    ? 'Left'
+                    : 'Right';
                   root.vue.$refs['wishes'].style.display = 'block';
                   var wish = root.vue.$refs['location'];
                   wish.classList.add('leave' + direction);
@@ -252,17 +329,14 @@ class AdUnit extends Mads {
                       var nextWish = root.vue.$data.wishNo + 1;
                       if (nextWish == root.vue.$data.wishes.length) {
                         root.vue.$data.wishNo = 0;
-                      }
-                      else {
+                      } else {
                         root.vue.$data.wishNo = nextWish;
                       }
-                    }
-                    else {
+                    } else {
                       var prevWish = root.vue.$data.wishNo - 1;
                       if (prevWish < 0) {
                         root.vue.$data.wishNo = root.vue.$data.wishes.length - 1;
-                      }
-                      else {
+                      } else {
                         root.vue.$data.wishNo = prevWish;
                       }
                     }
@@ -296,9 +370,35 @@ class AdUnit extends Mads {
         subTwoClick() {
           if (this.subScene === 2) {
             this.next(3, 3);
-            TweenMax.to(root.vue.$refs.mainLantern, 1, {top:"0", scale: 1, opacity: 1, ease:Linear.easeNone})
-            TweenMax.fromTo(root.vue.$refs.ctaShareOn, 1, {bottom:"-300px", scale: 0.1, opacity: 0, ease:Linear.easeNone}, {bottom:"0", scale: 1, opacity: 1, ease:Linear.easeNone})
-            TweenMax.fromTo(root.vue.$refs.ctaShares, 1, {bottom:"-300px", scale: 0.1, opacity: 0, ease:Linear.easeNone}, {bottom:"0", delay: 0.5, scale: 1, opacity: 1, ease:Linear.easeNone})
+            TweenMax.to(root.vue.$refs.mainLantern, 1, {
+              top: "0",
+              scale: 1,
+              opacity: 1,
+              ease: Linear.easeNone
+            })
+            TweenMax.fromTo(root.vue.$refs.ctaShareOn, 1, {
+              bottom: "-300px",
+              scale: 0.1,
+              opacity: 0,
+              ease: Linear.easeNone
+            }, {
+              bottom: "0",
+              scale: 1,
+              opacity: 1,
+              ease: Linear.easeNone
+            })
+            TweenMax.fromTo(root.vue.$refs.ctaShares, 1, {
+              bottom: "-300px",
+              scale: 0.1,
+              opacity: 0,
+              ease: Linear.easeNone
+            }, {
+              bottom: "0",
+              delay: 0.5,
+              scale: 1,
+              opacity: 1,
+              ease: Linear.easeNone
+            })
           }
         },
         next(to, subTo) {
@@ -321,7 +421,7 @@ class AdUnit extends Mads {
                 this.selectedImg = root.resolve(`img/scene2/lantern-${root.vue.$data.lang}-${currentSlide + 1}.png`);
               }
             } catch (err) {
-                console.log('no slick around');
+              console.log('no slick around');
             }
           }
         }

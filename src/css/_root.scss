@@ -109,6 +109,8 @@ body {
     .header {
       height: 45px;
       background-color: white;
+      z-index: 100;
+      position: relative;
     }
   }
 }
