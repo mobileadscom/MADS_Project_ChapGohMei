@@ -53,7 +53,7 @@ class AdUnit extends Mads {
         <a @click="twitterClick()" :href="twitter_share" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-twitter.png')}" /></a>
         <a @click="downloadClick()" :href="selectedImg" download="wish-lantern"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-download.png')}" /></a>
       </div>
-      <div class="cta-flickup" v-show="subScene === 1" ref="cta-flickup"><img class="img-fluid" src="${this.resolve('img/scene3/cta-flickup.png')}" /></div>
+      <div class="cta-flickup" v-show="subScene === 1" ref="cta-flickup"><img class="img-fluid" src="${ (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) ? this.resolve('img/scene3/cta-flickup-2.png') : this.resolve('img/scene3/cta-flickup.png')}" /></div>
       `);
 
     //  Scene 4
