@@ -39,7 +39,7 @@
         left: 50%;
         transform: translateX(-50%);
         top: -50px;
-        z-index: 1;
+        z-index: 1; 
         max-width: 365px;
       }
     }
@@ -50,6 +50,11 @@
 
       img {
         height: 100%;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
       }
     }
 
@@ -58,6 +63,11 @@
 
       img {
         height: 100%;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
       }
     }
 
