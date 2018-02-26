@@ -49,9 +49,9 @@ class AdUnit extends Mads {
       <div class="img-selected" ref="mainLantern"><img ref="img-selected" :src='selectedImg' /></div>
       <div v-show="subScene === 3" class="cta-share-on" ref="ctaShareOn" @click="next()"><img class="img-fluid" src="${this.resolve('img/scene5/cta-share-on.png')}" /></div>
       <div v-show="subScene === 3" class="cta-shares" ref="ctaShares">
-        <a :href="'https://www.facebook.com/sharer/sharer.php?u=https://thecomingtogether.com.my/lanterns/'+selectedImg.split('/').pop()" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-fb.png')}" /></a>
-        <a :href="twitter_share" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-twitter.png')}" /></a>
-        <a :href="selectedImg" download="wish-lantern"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-download.png')}" /></a>
+        <a @click="facebookClick()" :href="'https://www.facebook.com/sharer/sharer.php?u=https://thecomingtogether.com.my/lanterns/'+selectedImg.split('/').pop()" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-fb.png')}" /></a>
+        <a @click="twitterClick()" :href="twitter_share" target="_blank"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-twitter.png')}" /></a>
+        <a @click="downloadClick()" :href="selectedImg" download="wish-lantern"><img class="img-fluid" src="${this.resolve('img/shares/btn-share-download.png')}" /></a>
       </div>
       <div class="cta-flickup" v-show="subScene === 1" ref="cta-flickup"><img class="img-fluid" src="${this.resolve('img/scene3/cta-flickup.png')}" /></div>
       `);
@@ -81,8 +81,8 @@ class AdUnit extends Mads {
       <div class="cta-swipe"><img class="img-fluid" src="${this.resolve('img/scene6/cta-swipe.png')}" /></div>
       <div ref="wishes" class="wishes"><div class="wish">Another wish has been released!<div ref="location" class="location"> {{wishes[wishNo]}} </div></div></div>
       <div class="actions">
-      <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
-      <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
+      <div><a @click="youtubeClick()" href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
+      <div><img class="img-fluid" @click="next(2, 1, 'choose_again')" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
       </div>
       `);
 
@@ -92,8 +92,8 @@ class AdUnit extends Mads {
         <div class="header"></div>
         <div class="wish"><img class="img-fluid" src="${this.resolve('img/scene7/cta-another.png')}" /></div>
         <div class="actions">
-          <div><a href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
-          <div><img class="img-fluid" @click="next(2, 1)" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
+          <div><a @click="youtubeClick()" href="https://www.youtube.com/watch?v=jpqT1dNOAp8" target="_blank"><img class="img-fluid" src="${this.resolve('img/scene6/btn-watch2.png')}" /></a></div>
+          <div><img class="img-fluid" @click="next(2, 1, 'choose_again')" src="${this.resolve('img/scene6/btn-wish2.png')}" /></div>
         </div>
         `);
 
@@ -215,6 +215,8 @@ class AdUnit extends Mads {
           immediate: true,
           handler: (val) => {
             // If Scene 2 Load slider
+            root.tracker('E', `enter_scene${val}`)
+
             if (val === 2) {
               root.loadURLCSS(root.resolve('css/vendors/slick.css'));
               root.loadURLCSS(root.resolve('css/vendors/slick-theme.css'));
@@ -289,6 +291,7 @@ class AdUnit extends Mads {
               window.addEventListener('deviceorientation', (e) => {
                 if (e.gamma > 10) {
                   scene3Interaction();
+                  root.tracker('E', 'gyro_up')
                 }
               });
               root.loadJS(root.resolve('js/hammer.min.js')).then(() => {
@@ -297,6 +300,7 @@ class AdUnit extends Mads {
                   console.log(ev)
                   // if (ev.additionalEvent === 'panup') {
                   if (root.vue.$data.subScene === 1) {
+                    root.tracker('E', 'swipe_up')
                     scene3Interaction();
                   }
                   // }
@@ -319,6 +323,7 @@ class AdUnit extends Mads {
                   var direction = ev.direction == 2
                     ? 'Left'
                     : 'Right';
+                  root.tracker('E', `swipe_${direction.toLowerCase()}`)
                   root.vue.$refs['wishes'].style.display = 'block';
                   var wish = root.vue.$refs['location'];
                   wish.classList.add('leave' + direction);
@@ -360,6 +365,11 @@ class AdUnit extends Mads {
         changeLang(lang) {
           this.selectedLang = lang;
           $(this.$refs['lantern-selector']).find('.slick-slide').each((index, slide) => {
+            if (lang === 'eng') {
+              root.tracker('E', 'changeto_ch')
+            } else {
+              root.tracker('E', 'changeto_eng')
+            }
             $(slide).find('img').attr('src', $(slide).find('img').attr('src').replace(
               lang === 'eng'
               ? 'ch'
@@ -401,7 +411,10 @@ class AdUnit extends Mads {
             })
           }
         },
-        next(to, subTo) {
+        next(to, subTo, again) {
+          if (again === 'choose_again') {
+            root.tracker('E', 'choose_again')
+          }
           this.scene = typeof to !== 'undefined'
             ? to
             : this.scene + 1;
