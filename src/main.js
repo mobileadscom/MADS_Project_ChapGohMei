@@ -215,7 +215,9 @@ class AdUnit extends Mads {
           immediate: true,
           handler: (val) => {
             // If Scene 2 Load slider
-            root.tracker('E', `enter_scene${val}`)
+            if (val != 1) {
+              root.tracker('E', `enter_scene${val}`)  
+            }
 
             if (val === 2) {
               root.loadURLCSS(root.resolve('css/vendors/slick.css'));
