@@ -4,9 +4,7 @@ var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = function(env) {
-  env = {
-    production: process.env.NODE_ENV.toLowerCase() === 'production'
-  };
+  isProduction = env && env.NODE_ENV === 'production'
 
   var plugins = [new CopyWebpackPlugin([
       {
@@ -20,19 +18,20 @@ module.exports = function(env) {
         to: 'dist/options.json'
       }, {
         from: 'src/img',
-        to: env && env.production
+        to: isProduction
           ? 'dist/img'
           : 'img'
       }, {
         from: 'src/js',
-        to: env && env.production
+        to: isProduction
           ? 'dist/js'
           : 'js'
       }, {
         from: 'src/css',
-        to: env && env.production
+        to: isProduction
           ? 'dist/css'
-          : 'css'
+          : 'css',
+        ignore: ['*.scss']
       }
     ])];
 
@@ -43,7 +42,7 @@ module.exports = function(env) {
     }
   };
 
-  if (env.production) {
+  if (isProduction) {
     plugins.push(new UglifyJSPlugin({
       uglifyOptions: {
         comments: false,
@@ -54,19 +53,19 @@ module.exports = function(env) {
     }));
   }
 
-  if (!env.production) {
+  if (!isProduction) {
     plugins.push(new FriendlyErrorsPlugin())
   }
 
   return {
     entry: './src/main.js',
     output: {
-      filename: env && env.production
+      filename: isProduction
         ? 'dist/js/main.js'
         : 'js/main.js',
       libraryTarget: 'var'
     },
-    devtool: env && env.production
+    devtool: isProduction
       ? ''
       : 'cheap-eval-source-map',
     devServer: devServer,
@@ -91,7 +90,7 @@ module.exports = function(env) {
           exclude: /node_modules/,
           loader: 'eslint-loader',
           options: {
-            quiet: !env.production,
+            quiet: !isProduction,
             formatter: require('eslint-friendly-formatter')
           }
         }, {

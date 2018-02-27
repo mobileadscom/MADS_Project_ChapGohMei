@@ -7,6 +7,16 @@ import $ from 'jquery';
 import './main.scss';
 
 class AdUnit extends Mads {
+  constructor() {
+    super();
+    if (window.location.hostname == "thecomingtogether.com.my") {
+      window.rma = {
+       ct: '{CLICK_URL}'
+      };
+      this.custTracker = [`https://www.cdn.serving1.net/a/analytic.htm?uid=0&isNew={{isNew}}&referredUrl={{referredUrl}}&rmaId=14&domainId=0&pageLoadId=${this.pgId}&userId=4220&pubUserId=0&campaignId=6b86d2b454c06a5ed11e68c99a05a194&browser={{browser}}&os={{os}}&domain={{domain}}&callback=trackSuccess&callback=trackSuccess&type={{rmatype}}&tt={{rmatt}}&value={{rmavalue}}`]
+    }
+  }
+
   render() {
     window.jQuery = $;
     const scenes = [];
@@ -216,7 +226,7 @@ class AdUnit extends Mads {
           handler: (val) => {
             // If Scene 2 Load slider
             if (val != 1) {
-              root.tracker('E', `enter_scene${val}`)  
+              root.tracker('E', `enter_scene${val}`)
             }
 
             if (val === 2) {
@@ -372,6 +382,9 @@ class AdUnit extends Mads {
         },
         facebookClick() {
           root.tracker('E', 'share_facebook');
+        },
+        downloadClick() {
+          root.tracker('E', 'download_click');
         },
         changeLang(lang) {
           this.selectedLang = lang;
