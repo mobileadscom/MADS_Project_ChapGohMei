@@ -362,6 +362,15 @@ class AdUnit extends Mads {
         }
       },
       methods: {
+        youtubeClick() {
+          root.tracker('E', 'youtube_click');
+        },
+        twitterClick() {
+          root.tracker('E', 'share_twitter');
+        },
+        facebookClick() {
+          root.tracker('E', 'share_facebook');
+        },
         changeLang(lang) {
           this.selectedLang = lang;
           $(this.$refs['lantern-selector']).find('.slick-slide').each((index, slide) => {
